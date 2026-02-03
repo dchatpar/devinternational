@@ -20,7 +20,13 @@ export const ProcessingTimesWidget: React.FC = () => {
                             <Clock className="text-white/50" />
                             Current Processing Times
                         </h2>
-                        <p className="text-gray-400 mt-2">Live updates based on IRCC weekly data.</p>
+                        <p className="text-gray-400 mt-2 flex items-center gap-2">
+                            <span className="relative flex h-2 w-2">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-emerald opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-accent-emerald"></span>
+                            </span>
+                            Live updates based on IRCC weekly data.
+                        </p>
                     </div>
                     <button className="text-accent-cyan text-sm font-bold flex items-center gap-2 hover:gap-3 transition-all">
                         View Full Report <ArrowRight size={16} />

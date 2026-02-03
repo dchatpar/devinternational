@@ -56,17 +56,22 @@ export const TestimonialCarousel: React.FC = () => {
                     transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
                 >
                     {[...REVIEWS, ...REVIEWS, ...REVIEWS].map((review, i) => (
-                        <div key={i} className="min-w-[350px] bg-white/5 border border-white/10 p-8 rounded-2xl backdrop-blur-sm select-none hover:border-accent-cyan/30 transition-colors">
-                            <div className="flex items-center gap-3 mb-6">
-                                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center text-xl shadow-inner">
+                        <div key={i} className="min-w-[400px] bg-white/5 border border-white/10 p-8 rounded-3xl backdrop-blur-md select-none hover:border-accent-cyan/40 hover:bg-white/10 transition-all duration-500 group/card">
+                            <div className="flex items-center gap-4 mb-6">
+                                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-gray-700 to-black flex items-center justify-center text-2xl shadow-lg border border-white/10 group-hover/card:scale-110 transition-transform">
                                     {review.flag}
                                 </div>
                                 <div>
-                                    <div className="font-bold text-white text-lg">{review.name}</div>
-                                    <div className="text-xs text-accent-cyan font-mono uppercase">{review.origin}</div>
+                                    <div className="font-bold text-white text-lg tracking-tight group-hover/card:text-accent-cyan transition-colors">{review.name}</div>
+                                    <div className="text-xs text-gray-400 font-mono uppercase tracking-wider">{review.origin}</div>
                                 </div>
                             </div>
-                            <p className="text-gray-300 italic leading-relaxed">"{review.text}"</p>
+                            <div className="flex gap-1 mb-4 text-accent-cyan/60">
+                                {[...Array(review.rating)].map((_, r) => (
+                                    <Star key={r} size={14} fill="currentColor" />
+                                ))}
+                            </div>
+                            <p className="text-gray-300 italic leading-relaxed text-lg">"{review.text}"</p>
                         </div>
                     ))}
                 </motion.div>
