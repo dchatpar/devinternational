@@ -1,153 +1,192 @@
-
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Globe, Briefcase, Heart, BookOpen } from 'lucide-react';
+import {
+    Globe,
+    Briefcase,
+    Heart,
+    BookOpen,
+    ArrowRight,
+    ChevronRight,
+    GraduationCap,
+    Users
+} from 'lucide-react';
 
 const PATHWAY_CATEGORIES = [
     {
+        id: 'live',
         title: "Live Permanently",
-        icon: <Globe size={24} />,
-        description: "Pathways to Permanent Residence",
+        subtitle: "Express Entry & PNP",
+        icon: <Globe size={32} />,
+        description: "Your route to permanent residence.",
         image: "/assets/visionary/parliament-hill-ottawa-sunset-golden-hour_ddg_0.jpg",
+        color: "from-blue-600 to-cyan-500",
         links: [
             { label: "Express Entry System", href: "/live-in-canada/express-entry" },
             { label: "Federal Skilled Worker", href: "/live-in-canada/skilled-immigration/federal-skilled-worker" },
-            { label: "Canadian Experience Class", href: "/live-in-canada/skilled-immigration/canadian-experience-class" },
-            { label: "BC PNP Tech", href: "/live-in-canada/pnps-program/british-columbia" },
-            { label: "Ontario OINP", href: "/live-in-canada/pnps-program/ontario" },
+            { label: "Provincial Nominees (PNP)", href: "/live-in-canada/pnps-program" },
             { label: "Atlantic Immigration", href: "/live-in-canada/pnps-program/atlantic-immigration-pilot" },
         ]
     },
     {
+        id: 'work',
         title: "Work in Canada",
-        icon: <Briefcase size={24} />,
-        description: "Temporary & Open Work Permits",
-        image: "/assets/visionary/diverse-tech-professionals-meeting-vancouver-office-glass-walls_ddg_0.jpg",
+        subtitle: "Permits & Visas",
+        icon: <Briefcase size={32} />,
+        description: "Career opportunities in tech & more.",
+        image: "/assets/visionary/diverse-tech-professionals-meeting-vancouver-office-glass-walls_bing_0.jpg",
+        color: "from-emerald-600 to-teal-500",
         links: [
             { label: "LMIA Work Permits", href: "/live-in-canada/work-permit/lmia-based-work-permits" },
             { label: "Global Talent Stream", href: "/live-in-canada/work-permit/global-talent-stream" },
-            { label: "Business Visitors", href: "/live-in-canada/business-immigration/business-visitors" },
-            { label: "Intra-Company Transfer", href: "/live-in-canada/work-permit/intra-company-transfer" },
             { label: "Open Work Permits", href: "/live-in-canada/work-permit/open-work-permits" },
+            { label: "Business Visitors", href: "/live-in-canada/business-immigration/business-visitors" },
         ]
     },
     {
+        id: 'study',
         title: "Family & Study",
-        icon: <Heart size={24} />,
-        description: "Sponsorship & Education",
-        image: "/assets/visionary/graduate-students-throwing-hats-university-of-british-columbia_ddg_0.jpg",
+        subtitle: "Sponsorship & Education",
+        icon: <Users size={32} />,
+        description: "Reunite family or study at top schools.",
+        image: "/assets/visionary/happy-international-students-university-of-toronto-campus-laughing_bing_0.jpg",
+        color: "from-purple-600 to-pink-500",
         links: [
             { label: "Spousal Sponsorship", href: "/live-in-canada/family-sponsorship/spouse-common-law-partner" },
-            { label: "Parent & Grandparent", href: "/live-in-canada/family-sponsorship/parents-grandparents" },
+            { label: "Parents & Grandparents", href: "/live-in-canada/family-sponsorship/parents-grandparents" },
             { label: "Study Permits", href: "/live-in-canada/study-visa/study-permit" },
-            { label: "Post-Grad Work Permit", href: "/live-in-canada/work-permit/post-graduation-work-permit" },
-            { label: "Super Visa", href: "/live-in-canada/family-sponsorship/super-visa" },
+            { label: "PGWP (Post-Grad)", href: "/live-in-canada/work-permit/post-graduation-work-permit" },
         ]
     },
     {
+        id: 'business',
         title: "Business & Investor",
-        icon: <BookOpen size={24} />,
-        description: "For Entrepreneurs",
+        subtitle: "Start-up & C11",
+        icon: <BookOpen size={32} />,
+        description: "Launch your business in Canada.",
         image: "/assets/visionary/international-business-professionals-shaking-hands-toronto-skyline-background_ddg_0.jpg",
+        color: "from-amber-600 to-orange-500",
         links: [
-            { label: "Start-up Visa Program", href: "/live-in-canada/business-immigration/start-up-visa" },
-            { label: "Self-Employed Persons", href: "/live-in-canada/business-immigration/self-employment-program" },
+            { label: "Start-up Visa", href: "/live-in-canada/business-immigration/start-up-visa" },
+            { label: "Intra-Company Transfer", href: "/live-in-canada/work-permit/intra-company-transfer" },
             { label: "C11 Entrepreneur", href: "/live-in-canada/business-immigration/entrepreneur-work-permit" },
-            { label: "Owner Operator LMIA", href: "/live-in-canada/business-immigration/owner-operator-lmia" },
-            { label: "Invest in Canada", href: "/live-in-canada/business-immigration/investor-visa" },
+            { label: "Self-Employed", href: "/live-in-canada/business-immigration/self-employment-program" },
         ]
     }
 ];
 
 export const PathwaysGrid: React.FC = () => {
     const navigate = useNavigate();
+    const [hoveredCard, setHoveredCard] = useState<string | null>(null);
 
     return (
-        <section className="py-32 bg-background relative overflow-hidden">
-            {/* Ambient Background Glow */}
-            <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-accent-cyan/5 rounded-full blur-[120px] pointer-events-none" />
-            <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-purple-900/10 rounded-full blur-[120px] pointer-events-none" />
+        <section className="py-24 bg-[#050505] relative overflow-hidden">
 
-            <div className="max-w-7xl mx-auto px-6 relative z-10">
+            {/* Header */}
+            <div className="max-w-7xl mx-auto px-6 mb-16 relative z-10">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="flex flex-col md:flex-row md:items-end justify-between gap-6"
+                >
+                    <div className="max-w-2xl">
+                        <div className="flex items-center gap-3 mb-4">
+                            <span className="w-12 h-[2px] bg-accent-cyan" />
+                            <span className="text-accent-cyan font-bold tracking-widest uppercase text-sm">Explore Your Future</span>
+                        </div>
+                        <h2 className="text-4xl md:text-5xl font-black text-white leading-tight">
+                            Your Pathway to <br />
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">Canadian Permanent Residence</span>
+                        </h2>
+                    </div>
+                </motion.div>
+            </div>
 
-                <div className="text-center mb-20">
+            {/* Cards Grid */}
+            <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 h-[600px] md:h-[500px] lg:h-[600px]">
+                {PATHWAY_CATEGORIES.map((cat, i) => (
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
+                        key={cat.id}
+                        onHoverStart={() => setHoveredCard(cat.id)}
+                        onHoverEnd={() => setHoveredCard(null)}
+                        initial={{ opacity: 0, y: 50 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
+                        transition={{ delay: i * 0.1 }}
+                        className="relative group rounded-3xl overflow-hidden cursor-pointer"
+                        onClick={() => navigate(cat.links[0].href)} // Default click action
                     >
-                        <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 tracking-tight">
-                            Explore Your <span className="text-accent-cyan">Pathway</span>
-                        </h2>
-                        <p className="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed">
-                            Navigate our comprehensive directory of Canadian immigration streams.
-                            Find the route that matches your goals.
-                        </p>
-                    </motion.div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                    {PATHWAY_CATEGORIES.map((cat, i) => (
+                        {/* Background Image */}
                         <motion.div
-                            key={i}
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.5, delay: i * 0.1 }}
-                            className="group relative overflow-hidden rounded-3xl bg-white/5 border border-white/10 hover:border-accent-cyan/30 transition-colors duration-500 min-h-[500px] flex flex-col"
-                        >
-                            {/* Background Image with Overlay */}
-                            <div className="absolute inset-0 z-0">
-                                <img
-                                    src={cat.image}
-                                    alt={cat.title}
-                                    className="w-full h-full object-cover opacity-20 group-hover:opacity-30 group-hover:scale-110 transition-all duration-700 grayscale group-hover:grayscale-0"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/90 to-black" />
-                            </div>
+                            className="absolute inset-0 z-0 bg-cover bg-center"
+                            style={{ backgroundImage: `url(${cat.image})` }}
+                            animate={{
+                                scale: hoveredCard === cat.id ? 1.1 : 1.0,
+                                filter: hoveredCard === cat.id ? "grayscale(0%)" : "grayscale(100%) brightness(0.7)"
+                            }}
+                            transition={{ duration: 0.6 }}
+                        />
 
-                            <div className="relative z-10 p-8 h-full flex flex-col">
-                                <div className="flex items-center gap-4 mb-8">
-                                    <div className="p-3.5 rounded-xl bg-accent-cyan/10 text-accent-cyan border border-accent-cyan/20 group-hover:bg-accent-cyan group-hover:text-black transition-all duration-300 shadow-[0_0_20px_rgba(6,182,212,0.15)] group-hover:shadow-[0_0_30px_rgba(6,182,212,0.4)]">
-                                        {cat.icon}
-                                    </div>
-                                    <div>
-                                        <h3 className="font-bold text-white text-xl leading-tight group-hover:text-accent-cyan transition-colors">{cat.title}</h3>
-                                        <p className="text-xs text-gray-500 font-medium tracking-wide uppercase mt-1">{cat.description}</p>
-                                    </div>
+                        {/* Gradient Overlay */}
+                        <div className={`absolute inset-0 bg-gradient-to-t ${cat.color} opacity-0 group-hover:opacity-60 transition-opacity duration-500 mix-blend-multiply z-10`} />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-10" />
+
+                        {/* Content Container */}
+                        <div className="absolute inset-0 z-20 p-8 flex flex-col justify-end">
+
+                            {/* Icon & Title Group */}
+                            <motion.div
+                                animate={{ y: hoveredCard === cat.id ? 0 : 40 }}
+                                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                            >
+                                <div className="mb-4 text-white/80 group-hover:text-white transition-colors">
+                                    {cat.icon}
                                 </div>
+                                <h3 className="text-2xl font-bold text-white mb-1 group-hover:scale-105 transition-transform origin-left">
+                                    {cat.title}
+                                </h3>
+                                <div className="h-1 w-12 bg-accent-cyan rounded-full mb-4 group-hover:w-full transition-all duration-500" />
 
-                                <ul className="space-y-4 mb-4 flex-grow">
-                                    {cat.links.map((link, j) => (
+                                <p className="text-gray-400 text-sm mb-6 opacity-100 group-hover:opacity-0 transition-opacity duration-300 absolute">
+                                    {cat.description}
+                                </p>
+                            </motion.div>
+
+                            {/* Hover Content (Links) */}
+                            <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{
+                                    opacity: hoveredCard === cat.id ? 1 : 0,
+                                    height: hoveredCard === cat.id ? 'auto' : 0
+                                }}
+                                className="overflow-hidden"
+                            >
+                                <ul className="space-y-3 pb-4">
+                                    {cat.links.slice(0, 4).map((link, j) => (
                                         <li key={j}>
                                             <button
-                                                onClick={() => navigate(link.href)}
-                                                className="group/link flex items-center gap-3 text-gray-400 hover:text-white transition-all text-sm text-left w-full"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    navigate(link.href);
+                                                }}
+                                                className="flex items-center gap-2 text-sm text-gray-200 hover:text-white hover:translate-x-1 transition-all"
                                             >
-                                                <span className="w-1.5 h-1.5 rounded-full bg-white/20 group-hover/link:bg-accent-cyan group-hover/link:shadow-[0_0_10px_rgba(6,182,212,0.8)] transition-all" />
-                                                <span className="group-hover/link:translate-x-1 transition-transform duration-300">
-                                                    {link.label}
-                                                </span>
+                                                <ChevronRight size={14} className="text-accent-cyan" />
+                                                {link.label}
                                             </button>
                                         </li>
                                     ))}
                                 </ul>
+                                <button className="w-full py-3 bg-white/20 hover:bg-white text-white hover:text-black font-bold text-sm rounded-xl backdrop-blur-md transition-all flex items-center justify-center gap-2">
+                                    Explore <ArrowRight size={16} />
+                                </button>
+                            </motion.div>
 
-                                <div className="pt-6 border-t border-white/5 mt-auto">
-                                    <button
-                                        onClick={() => navigate(cat.links[0].href)} // Default to first link or category page
-                                        className="flex items-center gap-2 text-accent-cyan text-sm font-bold uppercase tracking-wider group-hover:gap-3 transition-all"
-                                    >
-                                        View All <ArrowRight size={16} />
-                                    </button>
-                                </div>
-                            </div>
-                        </motion.div>
-                    ))}
-                </div>
+                        </div>
 
+                    </motion.div>
+                ))}
             </div>
         </section>
     );
