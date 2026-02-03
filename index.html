@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth antialiased selection:bg-cyan-500/30 selection:text-white">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dev International | Canadian Immigration</title>
+    
+    <!-- Fonts: Inter (Sans) & JetBrains Mono (Mono) as proxies for Geist Sans/Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS (Configured for Phase 1 Design DNA) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              mono: ['JetBrains Mono', 'monospace'],
+            },
+            colors: {
+              background: {
+                DEFAULT: '#050505', // Deep Charcoal
+                elevated: '#0F0F0F',
+                surface: 'rgba(20, 20, 20, 0.4)',
+              },
+              accent: {
+                cyan: '#22d3ee',
+                'cyan-dim': 'rgba(34, 211, 238, 0.1)',
+                emerald: '#10b981',
+                amber: '#f59e0b',
+              },
+              border: {
+                subtle: 'rgba(255, 255, 255, 0.06)',
+                medium: 'rgba(255, 255, 255, 0.12)',
+                highlight: 'rgba(255, 255, 255, 0.2)',
+              }
+            },
+            borderRadius: {
+              'card': '1.5rem',
+              'pill': '9999px',
+            },
+            backdropBlur: {
+              '3xl': '64px', // Liquid Glass spec
+            },
+            backgroundImage: {
+              'noise': "url('https://grainy-gradients.vercel.app/noise.svg')",
+              'glass-gradient': 'linear-gradient(145deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.00) 100%)',
+            },
+            animation: {
+              'shimmer': 'shimmer 8s linear infinite',
+              'float': 'float 6s ease-in-out infinite',
+            },
+            keyframes: {
+              shimmer: {
+                '0%': { backgroundPosition: '0% 50%' },
+                '100%': { backgroundPosition: '200% 50%' },
+              },
+              float: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-10px)' },
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body {
+        background-color: #050505;
+        color: #ffffff;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* Liquid Glass Component Layer */
+      .glass-card {
+        background: rgba(10, 10, 10, 0.4);
+        backdrop-filter: blur(40px); /* Fallback for browsers */
+        -webkit-backdrop-filter: blur(40px);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        box-shadow: 
+          0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06),
+          inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      }
+      
+      .glass-card:hover {
+        background: rgba(15, 15, 15, 0.5);
+        border-color: rgba(255, 255, 255, 0.12);
+        box-shadow: 
+          0 20px 25px -5px rgba(0, 0, 0, 0.1),
+          0 10px 10px -5px rgba(0, 0, 0, 0.04),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      }
+
+      .text-glow {
+        text-shadow: 0 0 20px rgba(34, 211, 238, 0.5);
+      }
+
+      /* Scrollbar */
+      ::-webkit-scrollbar { width: 6px; }
+      ::-webkit-scrollbar-track { background: #050505; }
+      ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+      ::-webkit-scrollbar-thumb:hover { background: #555; }
+
+      .noise-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        pointer-events: none;
+        opacity: 0.035;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      }
+    </style>
+    <script type="importmap">
+    {
+      "imports": {
+        "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
+        "react": "https://esm.sh/react@^19.2.4",
+        "react/": "https://esm.sh/react@^19.2.4/",
+        "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+        "framer-motion": "https://esm.sh/framer-motion@^12.30.0",
+        "cmdk": "https://esm.sh/cmdk@1.0.0",
+        "fuse.js": "https://esm.sh/fuse.js@7.0.0"
+      }
+    }
+    </script>
+  <link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div class="noise-overlay"></div>
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
